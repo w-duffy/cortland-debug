@@ -1,6 +1,6 @@
 from flask import current_app
 from sqlalchemy.sql import text
-from app.models import db, Project, environment, SCHEMA
+from app.models import db, Comment, environment, SCHEMA
 from datetime import datetime, timedelta
 
 
@@ -39,8 +39,8 @@ seed_project_data = [
         "deadline": datetime.now() + timedelta(days=45),
     },
 ]
-def seed_projects():
-    project1 = Project(
+def seed_comments():
+    project1 = Comment(
         amount=seed_project_data[0]["amount"],
         user_id=seed_project_data[0]["user_id"],
         title=seed_project_data[0]["title"],
@@ -51,7 +51,7 @@ def seed_projects():
         media_url=seed_project_data[0]["media_url"],
         deadline=seed_project_data[0]["deadline"],
     )
-    project2 = Project(
+    project2 = Comment(
         amount=seed_project_data[1]["amount"],
         user_id=seed_project_data[1]["user_id"],
         title=seed_project_data[1]["title"],
@@ -62,7 +62,7 @@ def seed_projects():
         media_url=seed_project_data[1]["media_url"],
         deadline=seed_project_data[1]["deadline"],
     )
-    project3 = Project(
+    project3 = Comment(
         amount=seed_project_data[2]["amount"],
         user_id=seed_project_data[2]["user_id"],
         title=seed_project_data[2]["title"],
@@ -78,10 +78,10 @@ def seed_projects():
     db.session.add(project3)
     db.session.commit()
 
-def undo_projects():
+def undo_comments():
     if environment == "production":
-        db.session.execute(f"TRUNCATE table {SCHEMA}.projects RESTART IDENTITY CASCADE;")
+        db.session.execute(f"TRUNCATE table {SCHEMA}.comments RESTART IDENTITY CASCADE;")
     else:
-        db.session.execute(text("DELETE FROM projects"))
+        db.session.execute(text("DELETE FROM comments"))
 
     db.session.commit()
